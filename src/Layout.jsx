@@ -7,7 +7,6 @@ const Layout = ({ children }) => {
     <div className="min-h-screen flex flex-col bg-black text-white">
       <Navbar />
         {children}
-      {/* <Footer /> */}
       <Footer />
     </div>
   );

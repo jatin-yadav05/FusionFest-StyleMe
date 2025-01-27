@@ -1,0 +1,151 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.parent-container {
+  width: 100%;
+  height: 100vh;
+  background-color: #1C1D21;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.child-container {
+
+  min-width: 400px;
+  width: 30%;
+  height: 82vh;
+  border-radius: 15px;
+  background-color: #2C2638;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.h1 {
+  font-size: 2.2rem;
+  margin-top: 10px;
+  border-bottom: 3px solid #fff;
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Signika+Negative:300,400&display=swap');
+
+header {
+  position: relative;
+}
+
+.head {
+  background-color: #fff;
+  color: #000;
+  width: 100%;
+  min-height: 100vh;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.field h1 {
+  font-size: 90px;
+  text-align: center;
+}
+
+.body {
+  display: block;
+  text-align: center;
+  z-index: 1;
+}
+
+.body img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.body div {
+  position: relative;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  z-index: 99;
+}
+
+.service {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-width: 100%;
+  position: relative;
+}
+
+
+
+
+.masks {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+.mask {
+  position: absolute;
+  bottom: 0;
+  background-color: dodgerblue;
+  top: 99.2vh;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Signika Negative', sans-serif;
+}
+
+.services {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.service {
+  min-width: 100%;
+}
+
+.service h1 {
+  color: #000;
+  font-size: 40px;
+  padding: 70px 0;
+}
+
+@media screen and (min-width: 768px) {
+  .services {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    height: 100vh;
+  }
+
+  .service h1 {
+    font-size: 90px;
+  }
+}
