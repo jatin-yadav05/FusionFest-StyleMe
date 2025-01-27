@@ -134,14 +134,14 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <DropdownMenuSeparator className="bg-white/[0.08] my-2" />
-                  <DropdownMenuItem className="rounded-lg hover:bg-white/[0.08]">
+                  <DropdownMenuItem className="rounded hover:bg-white/[0.08]">
                     <Settings className="h-4 w-4 mr-2" />
                     Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-white/[0.08] my-2" />
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="rounded-lg text-red-400 hover:bg-white/[0.08]"
+                    className="rounded text-red-400 hover:bg-white/[0.08]"
                     disabled={isLoggingOut}
                   >
                     <LogOut className="h-4 w-4 mr-2" />
@@ -264,10 +264,10 @@ const Dashboard = () => {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent className="w-48 p-2 bg-white/[0.02] backdrop-blur-sm border-white/[0.08] rounded-xl">
-                                <DropdownMenuItem className="rounded-lg hover:bg-white/[0.08]">Edit</DropdownMenuItem>
-                                <DropdownMenuItem className="rounded-lg hover:bg-white/[0.08]">Duplicate</DropdownMenuItem>
+                                <DropdownMenuItem className="rounded hover:bg-white/[0.08]">Edit</DropdownMenuItem>
+                                <DropdownMenuItem className="rounded hover:bg-white/[0.08]">Duplicate</DropdownMenuItem>
                                 <DropdownMenuSeparator className="bg-white/[0.08] my-2" />
-                                <DropdownMenuItem className="rounded-lg text-red-400 hover:bg-white/[0.08]">
+                                <DropdownMenuItem className="rounded text-red-400 hover:bg-white/[0.08]">
                                   Delete
                                 </DropdownMenuItem>
                               </DropdownMenuContent>

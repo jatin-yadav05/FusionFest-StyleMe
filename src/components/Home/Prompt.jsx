@@ -74,7 +74,7 @@ const Prompt = () => {
             className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0"
           >
             <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-b from-white/10 to-white/5 p-1.5 rounded-lg border border-white/10">
+              <div className="bg-gradient-to-b from-white/10 to-white/5 p-1.5 rounded border border-white/10">
                 <Code className="w-3.5 h-3.5 text-white" />
               </div>
               <span className="text-xs font-medium text-white/90 tracking-wider">AI DESIGN STUDIO</span>
@@ -113,7 +113,7 @@ const Prompt = () => {
           transition={{ delay: 0.2 }}
         >
           <div className="relative">
-            <div className="w-full bg-gradient-to-b from-white/[0.07] to-white/[0.02] backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/10">
+            <div className="w-full bg-gradient-to-b from-white/[0.07] to-white/[0.02] backdrop-blur-sm rounded p-3 sm:p-4 border border-white/10">
               <div className="min-h-[24px] text-xs sm:text-sm text-white/80">
                 <span id="prompt-input" className="whitespace-pre-wrap"></span>
               </div>
@@ -127,7 +127,7 @@ const Prompt = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: index * 0.1 }}
-                className={`px-3 py-1 rounded-md flex items-center gap-1.5 transition-all ${
+                className={`px-3 py-1 rounded flex items-center gap-1.5 transition-all ${
                   currentPrompt === index 
                     ? 'bg-white/10 text-white border border-white/20' 
                     : 'bg-white/5 text-white/60 border border-transparent hover:border-white/10'

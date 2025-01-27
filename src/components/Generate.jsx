@@ -673,7 +673,7 @@ function Generate() {
                 </div>
 
                 {/* Upload Area */}
-                <div className='rounded-lg overflow-hidden border-2 border-dashed border-zinc-800 hover:border-zinc-700 transition-all duration-300 mb-6 lg:mb-0'>
+                <div className='rounded overflow-hidden border-2 border-dashed border-zinc-800 hover:border-zinc-700 transition-all duration-300 mb-6 lg:mb-0'>
                   <label className='relative block w-full cursor-pointer group'>
                     {modelImage ? (
                       <div className="relative">
@@ -734,7 +734,7 @@ function Generate() {
                             <button
                               key={gender}
                               onClick={() => setSelectedGender(gender)}
-                              className={`px-4 py-2 rounded-lg capitalize transition-all ${selectedGender === gender
+                              className={`px-4 py-2 rounded capitalize transition-all ${selectedGender === gender
                                 ? 'bg-white text-black'
                                 : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
                                 }`}
@@ -750,7 +750,7 @@ function Generate() {
                             <div
                               key={model.id}
                               onClick={() => handleModelSelect(model.image)}
-                              className="relative aspect-[3/4] rounded-lg overflow-hidden border border-zinc-800 cursor-pointer group hover:border-zinc-600 transition-all"
+                              className="relative aspect-[3/4] rounded overflow-hidden border border-zinc-800 cursor-pointer group hover:border-zinc-600 transition-all"
                             >
                               <img
                                 src={model.image}
@@ -795,7 +795,7 @@ function Generate() {
                 <h2 className='text-base font-semibold text-zinc-200 mb-2'>Generated Design</h2>
                 <div className='flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4'>
                   {/* Main Preview */}
-                  <div className='flex items-center justify-center bg-zinc-900/50 rounded-lg'>
+                  <div className='flex items-center justify-center bg-zinc-900/50 rounded'>
                     {generatedDesign ? (
                       <div className='w-full h-full flex items-center justify-center p-4'>
                         <img
@@ -822,7 +822,7 @@ function Generate() {
                           {/* Generate Option */}
                           <button
                             onClick={() => handleGenerateDesign()}
-                            className='p-4 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group'
+                            className='p-4 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group'
                           >
                             <div className='flex flex-col items-center text-center space-y-2'>
                               <Wand2 className='w-8 h-8 text-zinc-500 group-hover:text-white transition-colors' />
@@ -832,7 +832,7 @@ function Generate() {
                           </button>
 
                           {/* Upload Option */}
-                          <label className='p-4 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group cursor-pointer'>
+                          <label className='p-4 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group cursor-pointer'>
                             <div className='flex flex-col items-center text-center space-y-2'>
                               <Upload className='w-8 h-8 text-zinc-500 group-hover:text-white transition-colors' />
                               <span className='text-sm font-medium text-zinc-300'>Upload Garment</span>
@@ -849,7 +849,7 @@ function Generate() {
                           {/* Wardrobe Option */}
                           <button
                             onClick={() => document.getElementById('wardrobe-section').scrollIntoView({ behavior: 'smooth' })}
-                            className='p-4 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group'
+                            className='p-4 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group'
                           >
                             <div className='flex flex-col items-center text-center space-y-2'>
                               <svg className='w-8 h-8 text-zinc-500 group-hover:text-white transition-colors' fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -865,7 +865,7 @@ function Generate() {
                   </div>
 
                   {/* Try-on Result */}
-                  <div className='flex items-center justify-center bg-zinc-900/50 rounded-lg min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]'>
+                  <div className='flex items-center justify-center bg-zinc-900/50 rounded min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]'>
                     {loading ? (
                       <div className='flex flex-col items-center justify-center p-4'>
                         <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-white mb-2 sm:mb-3" />
@@ -923,7 +923,7 @@ function Generate() {
               </div>
 
               {/* Model Upload */}
-              <div className='rounded-lg overflow-hidden border-2 border-dashed border-zinc-800 hover:border-zinc-700 transition-all duration-300'>
+              <div className='rounded overflow-hidden border-2 border-dashed border-zinc-800 hover:border-zinc-700 transition-all duration-300'>
                 <label className='relative block w-full cursor-pointer group'>
                   {modelImage ? (
                     <div className="relative">
@@ -984,7 +984,7 @@ function Generate() {
                           <button
                             key={gender}
                             onClick={() => setSelectedGender(gender)}
-                            className={`px-4 py-2 rounded-lg capitalize transition-all ${selectedGender === gender
+                            className={`px-4 py-2 rounded capitalize transition-all ${selectedGender === gender
                               ? 'bg-white text-black'
                               : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
                               }`}
@@ -1000,7 +1000,7 @@ function Generate() {
                           <div
                             key={model.id}
                             onClick={() => handleModelSelect(model.image)}
-                            className="relative aspect-[3/4] rounded-lg overflow-hidden border border-zinc-800 cursor-pointer group hover:border-zinc-600 transition-all"
+                            className="relative aspect-[3/4] rounded overflow-hidden border border-zinc-800 cursor-pointer group hover:border-zinc-600 transition-all"
                           >
                             <img
                               src={model.image}
@@ -1028,7 +1028,7 @@ function Generate() {
                       <button
                         key={category}
                         onClick={() => handlePromptChange('category', category)}
-                        className={`px-4 py-2 rounded-lg border capitalize transition-all duration-300 ${promptData.category === category
+                        className={`px-4 py-2 rounded border capitalize transition-all duration-300 ${promptData.category === category
                           ? 'bg-white text-black border-white'
                           : 'border-zinc-800 hover:border-zinc-600 text-zinc-300'
                           }`}
@@ -1047,7 +1047,7 @@ function Generate() {
                       <button
                         key={genderOption}
                         onClick={() => handlePromptChange('gender', genderOption)}
-                        className={`px-4 py-2 rounded-lg border capitalize transition-all duration-300 ${promptData.gender === genderOption
+                        className={`px-4 py-2 rounded border capitalize transition-all duration-300 ${promptData.gender === genderOption
                           ? 'bg-white text-black border-white'
                           : 'border-zinc-800 hover:border-zinc-600 text-zinc-300'
                           }`}
@@ -1065,7 +1065,7 @@ function Generate() {
                     value={promptData.garmentType}
                     onValueChange={(value) => handlePromptChange('garmentType', value)}
                   >
-                    <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-300 h-10 rounded-lg text-sm hover:border-zinc-600 transition-all duration-300">
+                    <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-300 h-10 rounded text-sm hover:border-zinc-600 transition-all duration-300">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent className="bg-zinc-900 border-zinc-800">
@@ -1089,7 +1089,7 @@ function Generate() {
                     value={promptData.color}
                     onValueChange={(value) => handlePromptChange('color', value)}
                   >
-                    <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-300 h-10 rounded-lg text-sm hover:border-zinc-600 transition-all duration-300">
+                    <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-300 h-10 rounded text-sm hover:border-zinc-600 transition-all duration-300">
                       <SelectValue placeholder="Select color" />
                     </SelectTrigger>
                     <SelectContent className="bg-zinc-900 border-zinc-800">
@@ -1113,7 +1113,7 @@ function Generate() {
                     value={promptData.pattern}
                     onValueChange={(value) => handlePromptChange('pattern', value)}
                   >
-                    <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-300 h-10 rounded-lg text-sm hover:border-zinc-600 transition-all duration-300">
+                    <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-300 h-10 rounded text-sm hover:border-zinc-600 transition-all duration-300">
                       <SelectValue placeholder="Select pattern" />
                     </SelectTrigger>
                     <SelectContent className="bg-zinc-900 border-zinc-800">
@@ -1137,7 +1137,7 @@ function Generate() {
                     placeholder="Describe your desired outfit..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="min-h-[80px] max-h-[80px] bg-zinc-900 border-zinc-800 text-zinc-300 placeholder:text-zinc-600 rounded-lg resize-none text-sm focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-300"
+                    className="min-h-[80px] max-h-[80px] bg-zinc-900 border-zinc-800 text-zinc-300 placeholder:text-zinc-600 rounded resize-none text-sm focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-300"
                   />
                 </div>
 
@@ -1145,7 +1145,7 @@ function Generate() {
                 <div className='space-y-2'>
                   <Label className="text-zinc-400 uppercase text-xs tracking-wider">Fabric</Label>
                   <Select value={fabric} onValueChange={setFabric}>
-                    <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-300 h-10 rounded-lg text-sm hover:border-zinc-600 transition-all duration-300">
+                    <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-300 h-10 rounded text-sm hover:border-zinc-600 transition-all duration-300">
                       <SelectValue placeholder="Select fabric" />
                     </SelectTrigger>
                     <SelectContent className="bg-zinc-900 border-zinc-800">
@@ -1215,7 +1215,7 @@ function Generate() {
 
               {/* Error Display */}
               {error && (
-                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded">
                   <p className="text-red-400 text-sm">{error}</p>
                 </div>
               )}
@@ -1238,7 +1238,7 @@ function Generate() {
                 <div className='w-full flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 min-h-0 h-[calc(100vh-250px)]'>
                   {/* Main Preview */}
                   <div className='col-span-1 md:col-span-2 h-full'>
-                    <div className='relative w-full h-full rounded-lg overflow-hidden border border-zinc-800 group'>
+                    <div className='relative w-full h-full rounded overflow-hidden border border-zinc-800 group'>
                       <div className='w-full h-full flex items-center justify-center bg-zinc-900/50'>
                         <img
                           src={generatedDesign.image}
@@ -1253,7 +1253,7 @@ function Generate() {
                   {/* Side Details - Responsive */}
                   <div className='space-y-3 flex flex-col h-full'>
                     {/* Thumbnail */}
-                    <div className='relative aspect-square rounded-lg overflow-hidden border border-zinc-800 group'>
+                    <div className='relative aspect-square rounded overflow-hidden border border-zinc-800 group'>
                       <div className='w-full h-full flex items-center justify-center bg-zinc-900/50'>
                         <img
                           src={generatedDesign.image}
@@ -1347,7 +1347,7 @@ function Generate() {
                     {/* Generate Option */}
                     <button
                       onClick={() => handleGenerateDesign()}
-                      className='p-4 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group'
+                      className='p-4 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group'
                     >
                       <div className='flex flex-col items-center text-center space-y-2'>
                         <Wand2 className='w-8 h-8 text-zinc-500 group-hover:text-white transition-colors' />
@@ -1357,7 +1357,7 @@ function Generate() {
                     </button>
 
                     {/* Upload Option */}
-                    <label className='p-4 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group cursor-pointer'>
+                    <label className='p-4 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group cursor-pointer'>
                       <div className='flex flex-col items-center text-center space-y-2'>
                         <Upload className='w-8 h-8 text-zinc-500 group-hover:text-white transition-colors' />
                         <span className='text-sm font-medium text-zinc-300'>Upload Garment</span>
@@ -1374,7 +1374,7 @@ function Generate() {
                     {/* Wardrobe Option */}
                     <button
                       onClick={() => document.getElementById('wardrobe-section').scrollIntoView({ behavior: 'smooth' })}
-                      className='p-4 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group'
+                      className='p-4 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-all duration-300 group'
                     >
                       <div className='flex flex-col items-center text-center space-y-2'>
                         <svg className='w-8 h-8 text-zinc-500 group-hover:text-white transition-colors' fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1402,7 +1402,7 @@ function Generate() {
                   <button
                     key={category}
                     onClick={() => handlePromptChange('category', category)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${promptData.category === category
+                    className={`px-3 py-1.5 rounded text-xs font-medium transition-all duration-300 ${promptData.category === category
                       ? 'bg-white text-black'
                       : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
                       }`}
@@ -1430,7 +1430,7 @@ function Generate() {
                     });
                   }}
                   className={`
-                    relative rounded-lg overflow-hidden border cursor-pointer
+                    relative rounded overflow-hidden border cursor-pointer
                     transition-all duration-300 hover:scale-105 group
                     ${generatedDesign?.id === item.id
                       ? 'border-white shadow-lg shadow-white/10'

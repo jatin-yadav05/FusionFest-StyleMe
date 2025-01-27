@@ -49,7 +49,7 @@ const FAQSection = () => {
   return (
     <div className="mt-16 mx-auto max-w-4xl px-8">
       <h2 className="text-3xl font-bold mb-8 text-center">Frequently asked Questions</h2>
-      <div className="border border-gray-600 rounded-lg overflow-hidden">
+      <div className="border border-gray-600 rounded overflow-hidden">
         {faqs.map((faq, index) => (
           <div
             key={index}
@@ -97,7 +97,7 @@ const ContactSection = () => (
         { title: 'Visit Us', text: 'Visit on Google Maps', icon: 'M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25z' },
         { title: 'Call Us', text: '+1(234)567890', icon: 'M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h6m-6 0a1.5 1.5 0 011.5 1.5V5m-1.5-1.5H8.25m3 0h6' },
       ].map((contact, index) => (
-        <div key={index} className="border border-gray-600 rounded-lg p-6 text-center transition duration-300 transform hover:scale-105 bg-gray-900">
+        <div key={index} className="border border-gray-600 rounded p-6 text-center transition duration-300 transform hover:scale-105 bg-gray-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

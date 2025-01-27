@@ -7,12 +7,12 @@ const OwnModal = () => {
             <div className='h-[50%] md:h-[60%] w-full flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8'>
                 <img 
                     src={input} 
-                    className='h-full w-full md:w-[45%] object-cover object-top rounded-md'
+                    className='h-full w-full md:w-[45%] object-cover object-top rounded'
                     alt="Input model"
                 />
                 <img 
                     src={output} 
-                    className='h-full w-full md:w-[45%] object-cover object-top rounded-md'
+                    className='h-full w-full md:w-[45%] object-cover object-top rounded'
                     alt="Output result"
                 />
             </div>

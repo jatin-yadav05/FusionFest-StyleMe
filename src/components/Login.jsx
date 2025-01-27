@@ -187,8 +187,8 @@ function Login() {
                     className={`relative group ${focusedInput === 'email' ? 'z-10' : ''
                       }`}
                   >
-                    <div className="absolute -inset-[0.5px] bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                    <div className="absolute inset-0 rounded-lg bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    <div className="absolute -inset-[0.5px] bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    <div className="absolute inset-0 rounded bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-all duration-300" />
                     <Input
                       type="email"
                       placeholder="Email address"
@@ -209,8 +209,8 @@ function Login() {
                     className={`relative group ${focusedInput === 'password' ? 'z-10' : ''
                       }`}
                   >
-                    <div className="absolute -inset-[0.5px] bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                    <div className="absolute inset-0 rounded-lg bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    <div className="absolute -inset-[0.5px] bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    <div className="absolute inset-0 rounded bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-all duration-300" />
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
@@ -237,8 +237,8 @@ function Login() {
                   disabled={isLoading}
                   className="w-full relative group"
                 >
-                  <div className="absolute inset-0 bg-white/10 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative bg-white text-black font-medium h-12 rounded-lg hover:bg-white/90 transition-all duration-300 flex items-center justify-center gap-2">
+                  <div className="absolute inset-0 bg-white/10 rounded blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative bg-white text-black font-medium h-12 rounded hover:bg-white/90 transition-all duration-300 flex items-center justify-center gap-2">
                     <AnimatePresence mode="wait">
                       {isLoading ? (
                         <motion.div
@@ -286,8 +286,8 @@ function Login() {
                   onClick={() => GoogleLogin()}
                   className="w-full relative group"
                 >
-                  <div className="absolute inset-0 bg-white/5 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative bg-zinc-900 text-white font-medium h-12 rounded-lg hover:bg-zinc-800 border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-3">
+                  <div className="absolute inset-0 bg-white/5 rounded blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative bg-zinc-900 text-white font-medium h-12 rounded hover:bg-zinc-800 border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-3">
                     <svg
                       className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                       viewBox="0 0 24 24"
