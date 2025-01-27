@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --primary: 0 0% 100%;
+  --muted: 0 0% 15%;
+  --border: 0 0% 20%;
+}
+
+body {
+  @apply bg-black text-white min-h-screen;
+}
+
+/* Optional: Add custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-800 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-700;
+}
