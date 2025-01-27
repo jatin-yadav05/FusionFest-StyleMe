@@ -12,21 +12,33 @@
 
 body {
   @apply bg-black text-white min-h-screen;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
 
-/* Optional: Add custom scrollbar */
+body::-webkit-scrollbar {
+  display: none;
+}
+
 ::-webkit-scrollbar {
-  width: 10px;
+  display: none;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-black;
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-800 rounded-full;
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-700;
+  display: none;
+}
+
+/* Add padding to hero section for medium screens */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hero-section {
+    padding-top: 7rem;  /* Adjust this value as needed */
+  }
 }
