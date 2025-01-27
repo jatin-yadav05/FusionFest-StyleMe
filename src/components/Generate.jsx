@@ -563,17 +563,17 @@ function Generate() {
       {
         id: 'm1',
         name: 'Male Model 1',
-        image: 'src/assets/images/home/male-model-1.jpg'
+        image: 'src/assets/home/male-model-1.jpg'
       },
       {
         id: 'm2',
         name: 'Male Model 2',
-        image: 'src/assets/images/home/male-model-2.jpg'
+        image: 'src/assets/home/male-model-2.jpg'
       },
       {
         id: 'm3',
         name: 'Male Model 3',
-        image: 'src/assets/images/home/male-model-3.jpeg'
+        image: 'src/assets/home/male-model-3.jpeg'
       }
     ]
   };
@@ -633,9 +633,9 @@ function Generate() {
 
   if (currentStep === 'tryon') {
     return (
-      <div className='bg-black w-full h-screen text-white p-8 relative mt-16 max-sm:mt-2'>
+      <div className='bg-black w-full h-screen text-white p-8 relative mt-24 max-sm:mt-2'>
         {/* Step Indicator */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 bg-zinc-900/90 px-2 sm:px-4 py-2 sm:py-2.5 rounded-full border border-zinc-800 backdrop-blur-sm z-20 shadow-xl ">
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 px-2 sm:px-4 py-2 sm:py-2.5 rounded-full backdrop-blur-sm z-20 shadow-xl ">
         <div className={`flex items-center ${currentStep === 'design' ? 'text-white' : 'text-zinc-500'}`}>
           <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border ${currentStep === 'design' ? 'border-white bg-white/10' : 'border-zinc-700'
             }`}>1</div>
@@ -663,7 +663,7 @@ function Generate() {
           </div>
 
           {/* Rest of your try-on content */}
-          <div className='grid grid-cols-1 lg:grid-cols-[1fr,2fr] gap-6 h-[calc(100vh-180px)]'>
+          <div className='grid grid-cols-1 lg:grid-cols-[1fr,2fr] gap-6 h-[calc(100vh-220px)]'>
             {/* Left Panel - Model Upload */}
             <div className='bg-zinc-900/50 rounded-xl border border-zinc-800 backdrop-blur-sm p-4'>
               <div className='flex flex-col justify-between h-full'>
@@ -911,7 +911,7 @@ function Generate() {
         </div>
       </div>
 
-      <div className='flex flex-col lg:flex-row gap-6 max-w-[1800px] mx-auto h-[calc(100vh-90px)] pt-16 max-sm:pt-12'>
+      <div className='flex flex-col lg:flex-row gap-6 max-w-[1800px] mx-auto h-[calc(100vh-120px)] pt-16 max-sm:pt-12'>
         {/* Left Panel - Design Controls */}
         <div className='w-full lg:w-1/4 bg-zinc-900/50 rounded-xl border border-zinc-800 backdrop-blur-sm'>
           <div className='h-full overflow-y-auto scrollbar-hide p-3 md:p-5'>
@@ -1243,7 +1243,7 @@ function Generate() {
                         <img
                           src={generatedDesign.image}
                           alt="Main Preview"
-                          className='max-h-[calc(100vh-300px)] w-auto object-contain p-4'
+                          className='max-h-[calc(100vh-330px)] w-auto object-contain p-4'
                         />
                       </div>
                       <div className='absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent to-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300'></div>
@@ -1251,7 +1251,7 @@ function Generate() {
                   </div>
 
                   {/* Side Details - Responsive */}
-                  <div className='space-y-3 flex flex-col h-full'>
+                  <div className='space-y-3 flex flex-col h-full hidden lg:flex'>
                     {/* Thumbnail */}
                     <div className='relative aspect-square rounded overflow-hidden border border-zinc-800 group'>
                       <div className='w-full h-full flex items-center justify-center bg-zinc-900/50'>
