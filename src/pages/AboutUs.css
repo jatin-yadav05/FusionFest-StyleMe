@@ -200,9 +200,13 @@
 .feature-card h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
+  background: linear-gradient(45deg, #fff, #888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .feature-card p {
+  color: #fff;
   opacity: 0.8;
   line-height: 1.6;
 }
@@ -368,58 +372,76 @@
   background-color: #888;
 }
 
-/* Team Section */
-.team-section {
-  padding: 100px 20px;
-  background-color: #111;
-}
-
-.team-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.team-intro {
-  margin-bottom: 3rem;
-  font-size: 1.2rem;
-  opacity: 0.8;
-  letter-spacing: 1px;
-}
-
+/* Team Section Improvements */
 .team-member {
   text-align: center;
   cursor: pointer;
+  position: relative;
+  padding: 1rem;
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .member-image-container {
   position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  transition: transform 0.3s ease;
-  margin: 0 auto 1.5rem;
   width: 200px;
   height: 200px;
+  margin: 0 auto 1.5rem;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.member-image-container img {
+.member-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
 
-.team-member:hover .member-image-container img {
+.member-bio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.team-member:hover .member-bio {
+  opacity: 1;
+}
+
+.team-member:hover .member-image {
   transform: scale(1.1);
+}
+
+.member-bio p {
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: center;
 }
 
 .team-member h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  color: #fff;
 }
 
 .team-member p {
   opacity: 0.8;
+  color: #fff;
 }
 
 /* Common Section Styles */
@@ -574,67 +596,112 @@
     padding-top: 2rem;
     margin-top: 2rem;
   }
+
+  /* General section layout */
+  .value-section,
+  .features-section,
+  .impact-section,
+  .team-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* Grid layouts become single column */
+  .value-grid,
+  .features-grid,
+  .team-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Section titles become interactive */
+  .section-title {
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .section-title:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+  }
+
+  /* Value items stack vertically */
+  .value-item {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Impact section adjustments */
+  .impact-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .impact-visualization {
+    margin: 2rem auto;
+    max-width: 600px;
+  }
+
+  /* Team members stack vertically */
+  .team-member {
+    max-width: 300px;
+    margin: 0 auto 2rem;
+  }
 }
 
 @media (max-width: 768px) {
   .section-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
   }
 
   .impact-stats-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
+  }
+
+  .value-item,
+  .feature-card,
+  .team-member {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .member-image-container {
+    width: 180px;
+    height: 180px;
+  }
+
+  /* Improve touch targets */
+  .value-item-header,
+  .feature-card,
+  .team-member {
+    padding: 1.5rem;
+  }
+
+  /* Adjust spacing */
+  .value-section,
+  .features-section,
+  .impact-section,
+  .team-section {
+    padding: 60px 15px;
   }
 }
 
-/* Team member hover improvements */
-.team-member {
-  text-align: center;
-  cursor: pointer;
-}
-
-.member-image-container {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  transition: transform 0.3s ease;
-  margin: 0 auto 1.5rem;
-  width: 200px;
-  height: 200px;
-}
-
-.member-bio {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2.5rem;
-  opacity: 0;
+/* Add smooth transitions for all interactive elements */
+.section-title,
+.value-item,
+.feature-card,
+.team-member,
+.member-bio,
+.member-image {
   transition: all 0.3s ease;
-  transform: translateY(100%);
-}
-
-/* Change hover trigger to entire team member card */
-.team-member:hover .member-bio {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.team-member:hover .member-image {
-  transform: scale(1.1);
-}
-
-.member-bio p {
-  color: #fff;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  text-align: center;
-  padding: 0.5rem;
 }
 
 /* Section separation */
@@ -652,22 +719,4 @@
 
 .team-section {
   background-color: #111;
-}
-
-/* Update Team Section heading */
-.team-section h2 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  background: linear-gradient(45deg, #fff, #888);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-align: center;
-}
-
-/* Add underline similar to mission section */
-.team-underline {
-  width: 100px;
-  height: 4px;
-  background: linear-gradient(90deg, #fff, #888);
-  margin: 1rem auto 2rem;
 } 
