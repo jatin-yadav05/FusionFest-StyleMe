@@ -76,7 +76,7 @@ const Dashboard = () => {
   if (!userDetails) return null;
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black pt-24">
       {isLoggingOut && (
         <div className="fixed top-0 left-0 w-full h-1 bg-white/10 z-50">
           <div className="h-full bg-white animate-[loading_1.5s_ease-in-out]"></div>

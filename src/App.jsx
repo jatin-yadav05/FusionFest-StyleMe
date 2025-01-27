@@ -9,7 +9,7 @@ import SignIn from "./components/SignIn"
 import Dashboard from "./components/Dashboard"
 import {GoogleOAuthProvider} from '@react-oauth/google'
 import PreventPages from './components/PreventPages'
-
+import Not_found from './components/Not_found'
 function App() {
   useEffect(() => {
     document.documentElement.classList.add('dark')
@@ -36,6 +36,7 @@ function App() {
         <Route path="/login" element={<GoogleAuthWrapper />} />
         <Route path="/signup" element={<GoogleAuthSign />} />
         <Route path="/dashboard" element={<PreventPages><Dashboard /></PreventPages>} />
+        <Route path="*" element={<Not_found/>}/>
       </Routes>
     </Layout>
   )
