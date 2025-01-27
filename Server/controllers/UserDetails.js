@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt")
 const User = require("../models/UserSchema")
-const userHistory=require("../models/userHistory")
+
 const { oauth2client } = require("../utils/googleConfig")
 const jwt = require("jsonwebtoken")
 const axios = require("axios")

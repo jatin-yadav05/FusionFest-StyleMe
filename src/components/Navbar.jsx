@@ -16,7 +16,12 @@ const Navbar = () => {
 
   const [activeTab, setActiveTab] = useState(navItems[0].name);
   const [isMobile, setIsMobile] = useState(false);
-
+const [isLogin,setIslogin]=useState(false);
+useEffect(()=>{
+  const userLocal=localStorage.getItem("Details");
+  setIslogin(!userLocal);
+  
+},[localStorage.getItem("Details")])
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -83,7 +88,7 @@ const Navbar = () => {
           </div>
 
           {/* Auth Buttons */}
-          <div className="hidden lg:flex items-center gap-5 flex-shrink-0 pointer-events-auto">
+          {isLogin &&<div className="hidden lg:flex items-center gap-5 flex-shrink-0 pointer-events-auto">
             <Link
               to="/login"
               className="text-white hover:text-white text-[15px] font-semibold transition-all duration-300 hover:scale-105 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-white hover:after:w-full after:transition-all after:duration-300"
@@ -96,7 +101,7 @@ const Navbar = () => {
             >
               Sign Up
             </Link>
-          </div>
+          </div>}
         </div>
       </div>
     </nav>
