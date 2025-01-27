@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Check } from 'lucide-react';
-
+import { createRazorpay } from './Razorpay';
+import { useNavigate } from 'react-router-dom';
 const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
-
+const navigate=useNavigate();
   const plans = [
     {
       name: "Free",
@@ -135,6 +136,15 @@ const Pricing = () => {
               </div>
 
               <button
+               onClick={() => {
+                if (plan.name === "Pro") {
+                  createRazorpay(isAnnual ? 1099 : 99, navigate);
+                }else if(plan.name === "Free"){
+                  navigate('/signin')
+                }else if(plan.name === "Enterprise"){
+                  navigate('/contact')
+                } 
+              }}
                 className={`w-full py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
                   plan.highlighted
                     ? 'bg-white text-black hover:bg-white/90'
