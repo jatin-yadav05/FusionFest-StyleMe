@@ -304,7 +304,6 @@ const AboutUs = () => {
             className="team-content"
           >
             <h2>Meet Our Team</h2>
-            <div className="team-underline"></div>
             <p className="team-intro">Passionate experts bringing innovation to fashion</p>
             <div className="team-grid">
               {teamMembers.map((member, index) => (
