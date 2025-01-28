@@ -1,25 +1,26 @@
 import React from 'react';
 import { Timeline } from '../ui/timeline';
 import { motion } from 'framer-motion';
-import { application1, application2, application3, application4 } from '../../utils';
+import { application1, application2, application3, application4 , Education, Wardrobe2} from '../../utils';
 
 const WhyStyleMe = () => {
   const timelineData = [
     {
-      title: "Design",
+      title: "Learning",
       content: (
         <div>
-          <p className="text-neutral-200 text-sm md:text-base font-normal mb-8">
-            Embark on your fashion journey with our state-of-the-art AI-powered design suite. Create sophisticated, unique pieces that perfectly embody your creative vision and personal aesthetic.
+          <p className="text-neutral-200  md:text-xl font-normal mb-8">
+          Our platform is an innovative tool for fashion education, allowing students and educators to explore garment design and visualization in a hands-on, interactive way. Perfect for courses and workshops, it bridges theory and practice effortlessly.
+
           </p>
           <div className="grid grid-cols-2 gap-4">
             <img 
-              src={application1} 
+              src={application4} 
               alt="AI Design Interface"
               className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
             />
             <img 
-              src={application2} 
+              src={Education} 
               alt="Design Process"
               className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
             />
@@ -28,11 +29,11 @@ const WhyStyleMe = () => {
       ),
     },
     {
-      title: "Generate",
+      title: "Branding",
       content: (
         <div>
-          <p className="text-neutral-200 text-sm md:text-base font-normal mb-8">
-            Witness the power of artificial intelligence as it transforms your creative concepts into stunning, production-ready fashion designs. Experience seamless real-time generation with sophisticated customization capabilities at your fingertips.
+          <p className="text-neutral-200 text-sm md:text-xl font-normal mb-8">
+          Fashion brands can harness our platform to design costumes and integrate it into their websites, enabling customers to try on clothes virtually. This not only enhances the shopping experience but also drives customer engagement and increases sales.
           </p>
           <div className="grid grid-cols-2 gap-4">
             <img 
@@ -41,7 +42,7 @@ const WhyStyleMe = () => {
               className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
             />
             <img 
-              src={application4} 
+              src={application2} 
               alt="Generated Designs"
               className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
             />
@@ -53,23 +54,23 @@ const WhyStyleMe = () => {
       title: "Customize",
       content: (
         <div>
-          <p className="text-neutral-200 text-sm md:text-base font-normal mb-4">
-            Take complete control of your creative vision with our comprehensive suite of professional customization tools and features
+          <p className="text-neutral-200 text-sm md:text-xl font-normal mb-4">
+          Reimagine your personal wardrobe with ease. Upload your picture, try out garments, and visualize your style choices in real-time. It’s like having a virtual dressing room at your fingertips.
           </p>
           <div className="mb-8">
-            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-base">
+            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-xl">
               • Premium Fabric Selection & Management
             </div>
-            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-base">
+            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-xl">
               • Advanced Color Palette Integration
             </div>
-            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-base">
+            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-xl">
               • Precision Size Customization
             </div>
-            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-base">
+            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-xl">
               • Extensive Style Variations
             </div>
-            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-base">
+            <div className="flex gap-2 items-center text-neutral-300 text-sm md:text-xl">
               • Intelligent Pattern Generation
             </div>
           </div>
@@ -80,7 +81,7 @@ const WhyStyleMe = () => {
               className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
             />
             <img 
-              src={application4} 
+              src={Wardrobe2} 
               alt="Customized Designs"
               className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]"
             />
