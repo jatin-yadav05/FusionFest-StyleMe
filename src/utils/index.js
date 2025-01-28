@@ -29,8 +29,12 @@ import tabletView from '../assets/home/Tablet-view.jpg'
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useAnimation } from 'framer-motion';
+// import maleModel from '../assets/home/maleModal.svg';
+// import femaleModel from '../assets/home/femaleModel.svg'
+import Education from '../assets/home/education.jpg';
+import Wardrobe2 from '../assets/home/wardrobe2.jpg';
 
-export {checkbg, NorthEastArrow, firstImage, ownVision, fabricImg, maleModal, femaleModel, testimonialbg, manProfessional, femaleProfessional, doubleSideArrow, uploadModal, selectCategory, processing, givePrompt, garment, wardrobe, logo, chooseModal, application1, application2, application3, application4, input, output, desktopView, mobileView, tabletView};
+export {checkbg, NorthEastArrow, firstImage, ownVision, fabricImg, maleModal, femaleModel, testimonialbg, manProfessional, femaleProfessional, doubleSideArrow, uploadModal, selectCategory, processing, givePrompt, garment, wardrobe, logo, chooseModal, application1, application2, application3, application4, input, output, desktopView, mobileView, tabletView, Education, Wardrobe2};
 
 export const useScroll = () => {
   const controls = useAnimation();

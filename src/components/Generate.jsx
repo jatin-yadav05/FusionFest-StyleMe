@@ -13,6 +13,8 @@ import { Label } from "../components/ui/label"
 import { Wand2, ChevronRight, ChevronLeft, X, Upload, ArrowLeft, User } from "lucide-react"
 import { generateFashionImage } from '../services/imageGeneration'
 import { client } from "@gradio/client";
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const GARMENT_TYPES = {
   tops: [
@@ -147,18 +149,18 @@ function Generate() {
     bottoms: [
       {
         id: 4,
-        name: 'Blue Jeans',
-        image: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&h=500&fit=crop'
+        name: 'Brown Bottom',
+        image: '/src/assets/home/Brown-bottom.jpg'
       },
       {
         id: 5,
-        name: 'Black Skirt',
-        image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500&h=500&fit=crop'
+        name: 'Black Bottom',
+        image: '/src/assets/home/Black-bottom.jpg'
       },
       {
         id: 6,
-        name: 'Khaki Pants',
-        image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&h=500&fit=crop'
+        name: 'Pink Bottom',
+        image: '/src/assets/home/Pink-bottom.jpg'
       },
     ],
     dresses: [
@@ -315,11 +317,13 @@ function Generate() {
       }
 
       console.log('Setting generated design'); // Debug log
-      setGeneratedDesign({
+      const design = {
         id: Date.now(),
         name: `${promptData.color} ${promptData.garmentType}`,
         image: result.dataUrl
-      });
+      };
+      setGeneratedDesign(design);
+      await saveGeneratedImage(result.dataUrl);
 
       // Success notification
       console.log('Design generated successfully!');
@@ -426,7 +430,7 @@ function Generate() {
       }
 
       const app = await client("yisol/IDM-VTON", {
-        hf_token: import.meta.env.VITE_HUGGING_FACE_API
+        hf_token: "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"
       });
 
       const result = await app.predict("/tryon", [
@@ -443,12 +447,15 @@ function Generate() {
         // Only process and show the try-on result (first image)
         const response = await fetch(result.data[0].url);
         const blob = await response.blob();
-        const imageUrl= URL.createObjectURL(blob)
+        const tryOnUrl = URL.createObjectURL(blob);
+        
         setTryOnResult({
-          url: URL.createObjectURL(blob),
+          url: tryOnUrl,
           blob
         });
-       
+
+        // Save the final try-on result
+        await saveGeneratedImage(result.data[0].url);
         setRetryCount(0);
       }
 
@@ -564,17 +571,17 @@ function Generate() {
       {
         id: 'm1',
         name: 'Male Model 1',
-        image: 'src/assets/images/home/male-model-1.jpg'
+        image: 'src/assets/home/male-model-1.jpg'
       },
       {
         id: 'm2',
         name: 'Male Model 2',
-        image: 'src/assets/images/home/male-model-2.jpg'
+        image: 'src/assets/home/male-model-2.jpg'
       },
       {
         id: 'm3',
         name: 'Male Model 3',
-        image: 'src/assets/images/home/male-model-3.jpeg'
+        image: 'src/assets/home/male-model-3.jpeg'
       }
     ]
   };
@@ -632,11 +639,73 @@ function Generate() {
     reader.readAsDataURL(file);
   };
 
+  // Update the saveGeneratedImage function
+  const saveGeneratedImage = async (imageUrl) => {
+    try {
+      const userDetails = JSON.parse(localStorage.getItem("Details"));
+      if (!userDetails || !userDetails._id) {
+        toast.error("Please login to save images");
+        return;
+      }
+
+      console.log('Saving image with details:', {
+        userId: userDetails._id,
+        category: promptData.category,
+        imageUrl: imageUrl.substring(0, 100) + '...' // Log first 100 chars of URL for debugging
+      });
+
+      const designName = promptData.garmentType ? 
+        `${promptData.color || ''} ${promptData.pattern || ''} ${promptData.garmentType}`.trim() :
+        'Generated Design';
+
+      const response = await axios.post('http://localhost:4444/api/images/save', {
+        userId: userDetails._id,
+        imageUrl,
+        category: promptData.category || 'tops',
+        name: designName
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.data.status) {
+        toast.success("Design saved successfully!");
+      } else {
+        throw new Error(response.data.msg || 'Failed to save image');
+      }
+    } catch (error) {
+      console.error('Error saving image:', error.response || error);
+      toast.error(error.response?.data?.msg || "Failed to save design");
+    }
+  };
+
+  // Add download function for try-on images
+  const handleDownloadTryOn = async () => {
+    if (!tryOnResult?.url) return;
+
+    try {
+      const response = await fetch(tryOnResult.url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `tryon-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download image');
+    }
+  };
+
   if (currentStep === 'tryon') {
     return (
-      <div className='bg-black w-full h-screen text-white p-8 relative mt-16 max-sm:mt-2'>
+      <div className='bg-black w-full h-screen text-white p-8 relative mt-24 max-sm:mt-2'>
         {/* Step Indicator */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 bg-zinc-900/90 px-2 sm:px-4 py-2 sm:py-2.5 rounded-full border border-zinc-800 backdrop-blur-sm z-20 shadow-xl ">
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 px-2 sm:px-4 py-2 sm:py-2.5 rounded-full backdrop-blur-sm z-20 shadow-xl ">
         <div className={`flex items-center ${currentStep === 'design' ? 'text-white' : 'text-zinc-500'}`}>
           <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border ${currentStep === 'design' ? 'border-white bg-white/10' : 'border-zinc-700'
             }`}>1</div>
@@ -664,7 +733,7 @@ function Generate() {
           </div>
 
           {/* Rest of your try-on content */}
-          <div className='grid grid-cols-1 lg:grid-cols-[1fr,2fr] gap-6 h-[calc(100vh-180px)]'>
+          <div className='grid grid-cols-1 lg:grid-cols-[1fr,2fr] gap-6 h-[calc(100vh-220px)]'>
             {/* Left Panel - Model Upload */}
             <div className='bg-zinc-900/50 rounded-xl border border-zinc-800 backdrop-blur-sm p-4'>
               <div className='flex flex-col justify-between h-full'>
@@ -873,12 +942,31 @@ function Generate() {
                         <p className='text-xs sm:text-sm text-zinc-400'>Processing try-on...</p>
                       </div>
                     ) : tryOnResult ? (
-                      <div className='w-full h-full flex items-center justify-center p-2 sm:p-4'>
+                      <div className="relative">
                         <img
                           src={tryOnResult.url}
-                          alt="Try-on Result"
-                          className='max-h-[200px] sm:max-h-[300px] lg:max-h-[calc(100vh-220px)] w-auto object-contain'
+                          alt="Try-on result"
+                          className="w-full h-full object-cover rounded-lg"
                         />
+                        <button
+                          onClick={handleDownloadTryOn}
+                          className="absolute bottom-4 right-4 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full backdrop-blur-sm transition-all duration-300 flex items-center gap-2"
+                        >
+                          <svg 
+                            className="w-4 h-4" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              strokeWidth={2} 
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" 
+                            />
+                          </svg>
+                          Download
+                        </button>
                       </div>
                     ) : (
                       <div className='text-center p-4'>
@@ -912,7 +1000,7 @@ function Generate() {
         </div>
       </div>
 
-      <div className='flex flex-col lg:flex-row gap-6 max-w-[1800px] mx-auto h-[calc(100vh-90px)] pt-16 max-sm:pt-12'>
+      <div className='flex flex-col lg:flex-row gap-6 max-w-[1800px] mx-auto h-[calc(100vh-120px)] pt-16 max-sm:pt-12'>
         {/* Left Panel - Design Controls */}
         <div className='w-full lg:w-1/4 bg-zinc-900/50 rounded-xl border border-zinc-800 backdrop-blur-sm'>
           <div className='h-full overflow-y-auto scrollbar-hide p-3 md:p-5'>
@@ -1244,7 +1332,7 @@ function Generate() {
                         <img
                           src={generatedDesign.image}
                           alt="Main Preview"
-                          className='max-h-[calc(100vh-300px)] w-auto object-contain p-4'
+                          className='max-h-[calc(100vh-330px)] w-auto object-contain p-4'
                         />
                       </div>
                       <div className='absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent to-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300'></div>
@@ -1252,7 +1340,7 @@ function Generate() {
                   </div>
 
                   {/* Side Details - Responsive */}
-                  <div className='space-y-3 flex flex-col h-full'>
+                  <div className='space-y-3 flex flex-col h-full hidden lg:flex'>
                     {/* Thumbnail */}
                     <div className='relative aspect-square rounded overflow-hidden border border-zinc-800 group'>
                       <div className='w-full h-full flex items-center justify-center bg-zinc-900/50'>
@@ -1344,7 +1432,7 @@ function Generate() {
                     </div>
                   </div>
 
-                  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+                  <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
                     {/* Generate Option */}
                     <button
                       onClick={() => handleGenerateDesign()}
