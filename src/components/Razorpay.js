@@ -37,7 +37,7 @@ export const createRazorpay = (amount, navigate) => {
         data: data
     }
     axios.request(config).then((response) => {
-        console.log(JSON.stringify(response.data))
+        
         handleRazorpayScreen(response.data.amount, navigate)
     }).catch((e) => {
         console.log(e);
@@ -75,7 +75,7 @@ const fetchPayment = async (e) => {
     e.preventDefault();
     let passwordId = e.target.paymentId.value;
     await axios.get(`http://localhost:4444/api/auth/payment/${passwordId}`).then((response) => {
-        console.log(response.data);
+      
         // setResponseState(response.data)
     }).catch((e) => {
         console.log(e);

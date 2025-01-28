@@ -57,7 +57,7 @@ const Hero = () => {
 
         {/* CTA Button */}
         <div className='relative lg:left-[15%] z-20'>
-          <Link to="/login">
+          <Link to={localStorage.getItem("Details")?"/dashboard":"/login"}>
           <button className='group border-[1.5px] flex items-center gap-3 border-zinc-700/80 px-6 lg:px-8 py-3 lg:py-4 rounded-full font-semibold hover:border-white/80 hover:bg-white/95 hover:text-black transition-all duration-300 backdrop-blur-sm transform -translate-y-4'>
             <span className='text-zinc-200 group-hover:text-black transition-colors text-base'>
               Get Started

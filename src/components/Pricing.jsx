@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Check } from 'lucide-react';
 import { createRazorpay } from './Razorpay';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
+  const [isLogin,setIslogin]=useState(false);
+  useEffect(()=>{
+    const userDetails=localStorage.getItem("Details");
+    if(userDetails){
+      setIslogin(true);
+    }
+    else{
+      setIslogin(false);
+    }
+  })
 const navigate=useNavigate();
   const plans = [
     {
@@ -137,13 +150,16 @@ const navigate=useNavigate();
 
               <button
                onClick={() => {
-                if (plan.name === "Pro") {
+                if (plan.name === "Pro"&&isLogin) {
                   createRazorpay(isAnnual ? 1099 : 99, navigate);
                 }else if(plan.name === "Free"){
                   navigate('/signin')
                 }else if(plan.name === "Enterprise"){
                   navigate('/contact')
                 } 
+                else if(!isLogin){
+                  toast.error("Please Login !")
+                }
               }}
                 className={`w-full py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
                   plan.highlighted
@@ -157,6 +173,7 @@ const navigate=useNavigate();
           ))}
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 };

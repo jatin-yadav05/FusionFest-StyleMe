@@ -6,4 +6,5 @@ router.post('/login',login);
 router.post('/order',order)
 router.get("/payment/:paymentId",payment)
 router.get("/google",googleLogin);
+
 module.exports=router;

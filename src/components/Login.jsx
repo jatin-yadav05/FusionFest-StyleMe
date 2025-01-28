@@ -104,7 +104,7 @@ function Login() {
   };
 
   return (
-    <div className="min-h-[90vh] bg-black flex items-center justify-center p-4 relative overflow-hidden mt-16">
+    <div className="min-h-[90vh] bg-black flex items-center justify-center p-4   relative overflow-hidden mt-20">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 bg-black">
         {/* Monochrome Gradient Orbs */}

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt")
 const User = require("../models/UserSchema")
-
 const { oauth2client } = require("../utils/googleConfig")
 const jwt = require("jsonwebtoken")
 const axios = require("axios")
@@ -108,4 +107,27 @@ module.exports.googleLogin = async (req, res) => {
         })
     }
 
+}
+module.exports.saveGeneratedImage=async(userId,imageUrl)=>{
+    try {
+        // Check if the user already has an entry
+        let userImages = await userHistory.findOne({ userId });
+    
+        if (!userImages) {
+          // Create a new entry for the user
+          userImages = new userHistory({
+            userId,
+            images: [{ url: imageUrl }]
+          });
+        } else {
+          // Append the new image to the existing images array
+          userImages.images.push({ url: imageUrl });
+        }
+    
+        // Save the updated document
+        await userImages.save();
+        console.log("Image saved successfully!");
+      } catch (err) {
+        console.error("Error saving image:", err);
+      }
 }

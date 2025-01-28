@@ -125,7 +125,6 @@ function Generate() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [progress, setProgress] = useState(0)
-
   const modelInputRef = useRef(null)
 
   // Sample wardrobe data with real image URLs
