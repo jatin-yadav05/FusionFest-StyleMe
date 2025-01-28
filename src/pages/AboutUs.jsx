@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
 import './AboutUs.css';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, LineChart, Line } from 'recharts';
-
+import { Link } from 'react-router-dom';
 const AboutUs = () => {
   const teamMembers = [
     {
@@ -234,42 +234,6 @@ const AboutUs = () => {
               to an impressive 85%. Here's how we've grown:</p>
             </div>
 
-            <div className="impact-visualization">
-              <div className="graph-legend">
-                <div className="legend-item">
-                  <span className="legend-color white"></span>
-                  <p>Platform Efficiency</p>
-                </div>
-                <div className="legend-item">
-                  <span className="legend-color gray"></span>
-                  <p>User Satisfaction</p>
-                </div>
-              </div>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={marketData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <XAxis dataKey="quarter" stroke="#fff" />
-                  <YAxis stroke="#fff" label={{ value: 'Percentage (%)', angle: -90, position: 'insideLeft', fill: '#fff' }} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#111', border: 'none' }}
-                    labelStyle={{ color: '#fff' }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="efficiency" 
-                    stroke="#fff" 
-                    strokeWidth={2} 
-                    name="Platform Efficiency"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="satisfaction" 
-                    stroke="#888" 
-                    strokeWidth={2} 
-                    name="User Satisfaction"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
 
             <div className="impact-stats-grid">
               <div className="impact-stat">
@@ -340,7 +304,7 @@ const AboutUs = () => {
             >
               <h2>Ready to Transform Your Fashion Ideas?</h2>
               <p>Join us in reshaping the future of fashion design</p>
-              <button className="cta-button">Get Started</button>
+              <button className="cta-button"><Link to="/login">Get Started</Link></button>
             </motion.div>
           </section>
         </Parallax>

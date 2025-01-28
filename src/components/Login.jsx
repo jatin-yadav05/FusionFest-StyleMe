@@ -105,7 +105,7 @@ function Login() {
   };
 
   return (
-    <div className="min-h-[90vh] bg-black flex items-center justify-center p-4 relative overflow-hidden mt-16">
+    <div className="min-h-[90vh] bg-black flex items-center justify-center p-4   relative overflow-hidden mt-20">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 bg-black">
         {/* Monochrome Gradient Orbs */}
@@ -307,7 +307,7 @@ function Login() {
                 <motion.p className="text-center text-sm text-zinc-400 mt-8">
                   Don't have an account?{' '}
                   <Link
-                    to="/signin"
+                    to="/signup"
                     className="relative inline-block group"
                   >
                     <span className="relative z-10 text-white group-hover:text-zinc-300 transition-colors duration-300 font-medium">
