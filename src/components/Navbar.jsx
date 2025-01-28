@@ -43,7 +43,7 @@ const Navbar = () => {
         };
 
         checkUserStatus();
-    }, []);
+    }, [localStorage.getItem("Details")]);
 
     const handleLogout = async () => {
         setIsLoggingOut(true);
