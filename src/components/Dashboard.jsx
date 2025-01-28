@@ -69,7 +69,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     setIsLoggingOut(true);
     localStorage.removeItem("Details");
-    navigate("/login");
+    navigate("/");
     setIsLoggingOut(false);
   };
 

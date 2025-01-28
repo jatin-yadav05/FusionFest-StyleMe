@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Home, Wand2, CreditCard, LayoutDashboard } from 'lucide-react';
 import Logo from './Logo';
-
+import { useNavigate } from "react-router-dom";
 const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 const Navbar = () => {
@@ -13,13 +13,14 @@ const Navbar = () => {
     { name: 'Pricing', url: '/pricing', icon: CreditCard },
     { name: 'Dashboard', url: '/dashboard', icon: LayoutDashboard }
   ];
-
+const navigate=useNavigate();
   const [activeTab, setActiveTab] = useState(navItems[0].name);
   const [isMobile, setIsMobile] = useState(false);
 const [isLogin,setIslogin]=useState(false);
 useEffect(()=>{
   const userLocal=localStorage.getItem("Details");
   setIslogin(!userLocal);
+  navigate("/");
   
 },[localStorage.getItem("Details")])
   useEffect(() => {

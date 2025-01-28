@@ -123,7 +123,6 @@ function Generate() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [progress, setProgress] = useState(0)
-
   const modelInputRef = useRef(null)
 
   // Sample wardrobe data with real image URLs
@@ -444,10 +443,12 @@ function Generate() {
         // Only process and show the try-on result (first image)
         const response = await fetch(result.data[0].url);
         const blob = await response.blob();
+        const imageUrl= URL.createObjectURL(blob)
         setTryOnResult({
           url: URL.createObjectURL(blob),
           blob
         });
+       
         setRetryCount(0);
       }
 
