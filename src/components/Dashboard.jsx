@@ -69,7 +69,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     setIsLoggingOut(true);
     localStorage.removeItem("Details");
-    navigate("/login");
+    navigate("/");
     setIsLoggingOut(false);
   };
 
@@ -82,77 +82,6 @@ const Dashboard = () => {
           <div className="h-full bg-white animate-[loading_1.5s_ease-in-out]"></div>
         </div>
       )}
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-black/80 backdrop-blur-xl">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-10">
-              <h1 className="text-lg font-medium text-white/90">Dashboard</h1>
-              <div className="relative hidden md:block">
-                <Input
-                  type="search"
-                  placeholder="Search designs..."
-                  className="w-80 bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/30 rounded-full pl-11 h-10 focus:border-white/20 focus:ring-0"
-                />
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
-              </div>
-            </div>
-            <div className="flex items-center gap-5">
-              <Button
-                size="icon"
-                variant="ghost"
-                className="rounded-full w-10 h-10 hover:bg-white/[0.06]"
-              >
-                <Bell className="h-4 w-4 text-white/60" />
-              </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="rounded-full p-[2px] hover:bg-white/[0.06]"
-                  >
-                    <Avatar className="h-9 w-9 ring-2 ring-white/[0.08] hover:ring-white/20 transition-all">
-                      <AvatarImage src={userDetails.picture} />
-                      <AvatarFallback>{userDetails.name?.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="w-64 mr-2 p-2 bg-black/95 backdrop-blur-xl border-white/[0.08] rounded-2xl shadow-xl"
-                  align="end"
-                >
-                  <div className="px-2 py-2.5">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src={userDetails.picture} />
-                        <AvatarFallback>{userDetails.name?.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-medium text-white">{userDetails.name}</p>
-                        <p className="text-xs text-white/50">{userDetails.email}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator className="bg-white/[0.08] my-2" />
-                  <DropdownMenuItem className="rounded hover:bg-white/[0.08]">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-white/[0.08] my-2" />
-                  <DropdownMenuItem
-                    onClick={handleLogout}
-                    className="rounded text-red-400 hover:bg-white/[0.08]"
-                    disabled={isLoggingOut}
-                  >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    {isLoggingOut ? 'Logging out...' : 'Logout'}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-        </div>
-      </header>
 
       {/* Main Content */}
       <main className="max-w-[1600px] mx-auto px-6 lg:px-10 py-10">

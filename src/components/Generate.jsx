@@ -13,6 +13,8 @@ import { Label } from "../components/ui/label"
 import { Wand2, ChevronRight, ChevronLeft, X, Upload, ArrowLeft, User } from "lucide-react"
 import { generateFashionImage } from '../services/imageGeneration'
 import { client } from "@gradio/client";
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const GARMENT_TYPES = {
   tops: [
@@ -316,11 +318,13 @@ function Generate() {
       }
 
       console.log('Setting generated design'); // Debug log
-      setGeneratedDesign({
+      const design = {
         id: Date.now(),
         name: `${promptData.color} ${promptData.garmentType}`,
         image: result.dataUrl
-      });
+      };
+      setGeneratedDesign(design);
+      await saveGeneratedImage(result.dataUrl);
 
       // Success notification
       console.log('Design generated successfully!');
@@ -427,7 +431,7 @@ function Generate() {
       }
 
       const app = await client("yisol/IDM-VTON", {
-        hf_token: import.meta.env.VITE_HUGGING_FACE_API
+        hf_token: "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"
       });
 
       const result = await app.predict("/tryon", [
@@ -444,10 +448,15 @@ function Generate() {
         // Only process and show the try-on result (first image)
         const response = await fetch(result.data[0].url);
         const blob = await response.blob();
+        const tryOnUrl = URL.createObjectURL(blob);
+        
         setTryOnResult({
-          url: URL.createObjectURL(blob),
+          url: tryOnUrl,
           blob
         });
+
+        // Save the try-on result
+        await saveGeneratedImage(result.data[0].url);
         setRetryCount(0);
       }
 
@@ -629,6 +638,70 @@ function Generate() {
       setError('Failed to read image file');
     };
     reader.readAsDataURL(file);
+  };
+
+  // Update the saveGeneratedImage function
+  const saveGeneratedImage = async (imageUrl) => {
+    try {
+      const userDetails = JSON.parse(localStorage.getItem("Details"));
+      if (!userDetails || !userDetails._id) {
+        toast.error("Please login to save images");
+        return;
+      }
+
+      console.log('Saving image with details:', {
+        userId: userDetails._id,
+        category: promptData.category,
+        imageUrl: imageUrl.substring(0, 100) + '...' // Log first 100 chars of URL for debugging
+      });
+
+      const designName = promptData.garmentType ? 
+        `${promptData.color || ''} ${promptData.pattern || ''} ${promptData.garmentType}`.trim() :
+        'Generated Design';
+
+      const response = await axios.post('http://localhost:4444/api/images/save', {
+        userId: userDetails._id,
+        imageUrl,
+        category: promptData.category || 'tops',
+        name: designName
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('Save image response:', response.data);
+
+      if (response.data.status) {
+        toast.success("Design saved successfully!");
+      } else {
+        throw new Error(response.data.msg || 'Failed to save image');
+      }
+    } catch (error) {
+      console.error('Error saving image:', error.response || error);
+      toast.error(error.response?.data?.msg || "Failed to save design");
+    }
+  };
+
+  // Add download function for try-on images
+  const handleDownloadTryOn = async () => {
+    if (!tryOnResult?.url) return;
+
+    try {
+      const response = await fetch(tryOnResult.url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `tryon-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download image');
+    }
   };
 
   if (currentStep === 'tryon') {
@@ -872,12 +945,31 @@ function Generate() {
                         <p className='text-xs sm:text-sm text-zinc-400'>Processing try-on...</p>
                       </div>
                     ) : tryOnResult ? (
-                      <div className='w-full h-full flex items-center justify-center p-2 sm:p-4'>
+                      <div className="relative">
                         <img
                           src={tryOnResult.url}
-                          alt="Try-on Result"
-                          className='max-h-[200px] sm:max-h-[300px] lg:max-h-[calc(100vh-220px)] w-auto object-contain'
+                          alt="Try-on result"
+                          className="w-full h-full object-cover rounded-lg"
                         />
+                        <button
+                          onClick={handleDownloadTryOn}
+                          className="absolute bottom-4 right-4 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full backdrop-blur-sm transition-all duration-300 flex items-center gap-2"
+                        >
+                          <svg 
+                            className="w-4 h-4" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              strokeWidth={2} 
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" 
+                            />
+                          </svg>
+                          Download
+                        </button>
                       </div>
                     ) : (
                       <div className='text-center p-4'>
@@ -1343,7 +1435,7 @@ function Generate() {
                     </div>
                   </div>
 
-                  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+                  <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
                     {/* Generate Option */}
                     <button
                       onClick={() => handleGenerateDesign()}
