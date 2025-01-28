@@ -324,7 +324,8 @@ function Generate() {
         image: result.dataUrl
       };
       setGeneratedDesign(design);
-      await saveGeneratedImage(result.dataUrl);
+      alert("OKKK")
+      saveGeneratedImage(result.dataUrl);
 
       // Success notification
       console.log('Design generated successfully!');
@@ -644,13 +645,13 @@ function Generate() {
   const saveGeneratedImage = async (imageUrl) => {
     try {
       const userDetails = JSON.parse(localStorage.getItem("Details"));
-      if (!userDetails || !userDetails._id) {
+      if (!userDetails || !userDetails.email) {
         toast.error("Please login to save images");
         return;
       }
 
       console.log('Saving image with details:', {
-        userId: userDetails._id,
+        userId: userDetails.email,
         category: promptData.category,
         imageUrl: imageUrl.substring(0, 100) + '...' // Log first 100 chars of URL for debugging
       });
@@ -659,9 +660,10 @@ function Generate() {
         `${promptData.color || ''} ${promptData.pattern || ''} ${promptData.garmentType}`.trim() :
         'Generated Design';
 
+      // Send as JSON instead of FormData
       const response = await axios.post('http://localhost:4444/api/images/save', {
-        userId: userDetails._id,
-        imageUrl,
+        userId: userDetails.email,
+        imageUrl: imageUrl,
         category: promptData.category || 'tops',
         name: designName
       }, {
@@ -676,7 +678,7 @@ function Generate() {
         throw new Error(response.data.msg || 'Failed to save image');
       }
     } catch (error) {
-      console.error('Error saving image:', error.response || error);
+      console.error('Error saving image:', error);
       toast.error(error.response?.data?.msg || "Failed to save design");
     }
   };
