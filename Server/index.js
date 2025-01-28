@@ -11,22 +11,18 @@ const userRoutes = require("./routes/userRoutes")
 const imageRoutes = require('./routes/imageRoutes');
 const cors = require("cors");
 
-// Configure CORS
 app.use(cors({
-    origin: 'http://localhost:5173', // Replace with your frontend URL
+    origin: 'http://localhost:5173', 
     credentials: true
 }));
 
-// Increase payload limit if needed
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-// Routes
 app.use("/api/auth", userRoutes);
 app.use('/api/images', imageRoutes);
 
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({

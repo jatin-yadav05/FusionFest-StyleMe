@@ -324,7 +324,6 @@ function Generate() {
         image: result.dataUrl
       };
       setGeneratedDesign(design);
-      alert("OKKK")
       saveGeneratedImage(result.dataUrl);
 
       // Success notification
@@ -706,7 +705,7 @@ function Generate() {
 
   if (currentStep === 'tryon') {
     return (
-      <div className='bg-black w-full h-screen text-white p-8 relative mt-24 max-sm:mt-2'>
+      <div className='bg-black w-full h-auto text-white p-8 relative mt-24 max-sm:mt-2'>
         {/* Step Indicator */}
         <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 px-2 sm:px-4 py-2 sm:py-2.5 rounded-full backdrop-blur-sm z-20 shadow-xl ">
         <div className={`flex items-center ${currentStep === 'design' ? 'text-white' : 'text-zinc-500'}`}>
@@ -987,7 +986,7 @@ function Generate() {
   }
 
   return (
-    <div className='bg-black w-full h-screen text-white p-4 font-jakarta relative mt-20 max-sm:mt-2'>
+    <div className='bg-black w-full h-auto text-white p-4 font-jakarta relative mt-20 max-sm:mt-2'>
       {/* Step Indicator - Updated positioning and z-index */}
       <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 bg-transparent px-2 sm:px-4 py-2 sm:py-2.5 rounded-full  border-zinc-800 backdrop-blur-sm z-20 shadow-xl ">
         <div className={`flex items-center ${currentStep === 'design' ? 'text-white' : 'text-zinc-500'}`}>

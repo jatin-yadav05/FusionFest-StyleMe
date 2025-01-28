@@ -1,7 +1,6 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './style.css'
 import Input from './ui/Input'
-import { AiOutlineLock, AiOutlineMail, AiFillUnlock } from 'react-icons/ai'
 import { ToastContainer, toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios'
@@ -14,7 +13,7 @@ import { Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,7 +59,7 @@ function Login() {
         if (!response.data.status) {
           return toast.error(response.data.msg, toastOptions)
         }
-        localStorage.setItem("Details",JSON.stringify(response.data.data));
+        localStorage.setItem("Details", JSON.stringify(response.data.data));
         navigate('/');
         //toast.success(response.data, toastOptions);
         setPassword("");
@@ -70,19 +69,19 @@ function Login() {
       console.error(e);
     }
   }
-  const responseGoogle=async(authResult)=>{
-    
-    try{
-      if(authResult['code']){
+  const responseGoogle = async (authResult) => {
 
-        const result=await googleAuth(authResult['code'])
-        const {email,username,picture}=result.data.data
-       localStorage.setItem("Details",JSON.stringify(result.data.data));
-       navigate('/');
+    try {
+      if (authResult['code']) {
+
+        const result = await googleAuth(authResult['code'])
+        const { email, username, picture } = result.data.data
+        localStorage.setItem("Details", JSON.stringify(result.data.data));
+        navigate('/');
       }
-    
-    }catch(e){
-      console.error("Error occurs"+e);
+
+    } catch (e) {
+      console.error("Error occurs" + e);
     }
   }
   const GoogleLogin = useGoogleLogin({
@@ -307,16 +306,16 @@ function Login() {
                 <motion.p className="text-center text-sm text-zinc-400 mt-8">
                   Don't have an account?{' '}
                   <Link
-                    to="/signin"
+                    to="/signup"
                     className="relative inline-block group"
                   >
                     <span className="relative z-10 text-white group-hover:text-zinc-300 transition-colors duration-300 font-medium">
                       Sign up
                     </span>
                     <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
-                </Link>
+                  </Link>
                 </motion.p>
-            </form>
+              </form>
             </div>
           </div>
         </motion.div>

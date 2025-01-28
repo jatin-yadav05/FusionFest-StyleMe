@@ -26,13 +26,5 @@ const imageSchema = new mongoose.Schema({
   }
 });
 
-imageSchema.pre('save', function(next) {
-  console.log('Saving image:', {
-    userId: this.userId,
-    category: this.category,
-    name: this.name
-  });
-  next();
-});
 
 module.exports = mongoose.model('Images', imageSchema); 
