@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 
 const imageSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users',
+    type: String,
     required: true,
     index: true
   },
@@ -18,7 +17,6 @@ const imageSchema = new mongoose.Schema({
   category: {
     type: String,
     enum: ['tops', 'bottoms', 'dresses', 'outerwear'],
-    required: true,
     index: true
   },
   createdAt: {

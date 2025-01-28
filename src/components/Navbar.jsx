@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Home, Wand2, CreditCard, LayoutDashboard, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { Home, Wand2, CreditCard, LayoutDashboard, Settings, LogOut, ChevronDown, Info, HelpCircle } from 'lucide-react';
 import Logo from './Logo';
 import { useNavigate } from "react-router-dom";
 import {
@@ -17,18 +17,28 @@ import { Button } from "./ui/button";
 const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 const Navbar = () => {
-    const navItems = [
+    const publicNavItems = [
+        { name: 'Home', url: '/', icon: Home },
+        { name: 'About', url: '/about', icon: Info },
+        { name: 'Pricing', url: '/pricing', icon: CreditCard },
+        { name: 'FAQ', url: '/faq', icon: HelpCircle }
+    ];
+
+    const privateNavItems = [
         { name: 'Home', url: '/', icon: Home },
         { name: 'Generate', url: '/generate', icon: Wand2 },
         { name: 'Pricing', url: '/pricing', icon: CreditCard },
         { name: 'Dashboard', url: '/dashboard', icon: LayoutDashboard }
     ];
+
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState(navItems[0].name);
+    const [activeTab, setActiveTab] = useState('');
     const [isMobile, setIsMobile] = useState(false);
     const [isLogin, setIslogin] = useState(true);
     const [userDetails, setUserDetails] = useState(null);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+    const currentNavItems = isLogin ? publicNavItems : privateNavItems;
 
     useEffect(() => {
         const checkUserStatus = () => {
@@ -39,11 +49,22 @@ const Navbar = () => {
             } else {
                 setIslogin(true);
                 setUserDetails(null);
+                // Check if current route is protected
+                const protectedRoutes = ['/generate', '/dashboard'];
+                if (protectedRoutes.includes(window.location.pathname)) {
+                    navigate('/login');
+                }
             }
         };
 
         checkUserStatus();
-    }, [localStorage.getItem("Details")]);
+    }, [localStorage.getItem("Details"), navigate]);
+
+    useEffect(() => {
+        const path = window.location.pathname;
+        const currentItem = [...publicNavItems, ...privateNavItems].find(item => item.url === path);
+        setActiveTab(currentItem?.name || '');
+    }, [window.location.pathname]);
 
     const handleLogout = async () => {
         setIsLoggingOut(true);
@@ -81,7 +102,7 @@ const Navbar = () => {
                     {/* Center Navigation */}
                     <div className="flex-1 flex justify-center">
                         <div className="inline-flex items-center gap-3 bg-black/50 border border-white/20 backdrop-blur-lg py-1.5 px-1.5 rounded-full shadow-lg pointer-events-auto">
-                            {navItems.map((item) => {
+                            {currentNavItems.map((item) => {
                                 const Icon = item.icon;
                                 const isActive = activeTab === item.name;
 

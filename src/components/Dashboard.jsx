@@ -31,54 +31,25 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import axios from 'axios';
-
-const getSampleAnalyticsData = (timeframe) => {
-  const now = new Date();
-  const data = [];
-  let days;
-
-  switch (timeframe) {
-    case 'year':
-      days = 365;
-      break;
-    case 'month':
-      days = 30;
-      break;
-    default: // week
-      days = 7;
-      break;
-  }
-
-  for (let i = days - 1; i >= 0; i--) {
-    const date = new Date(now);
-    date.setDate(date.getDate() - i);
-    
-    // Generate random count with some patterns
-    let count;
-    if (date.getDay() === 0 || date.getDay() === 6) {
-      // Weekends have higher activity
-      count = Math.floor(Math.random() * 8) + 5;
-    } else {
-      // Weekdays have moderate activity
-      count = Math.floor(Math.random() * 5) + 2;
-    }
-
-    data.push({
-      date: date.toISOString().split('T')[0],
-      count: count
-    });
-  }
-
-  return data;
-};
+import { toast } from 'react-hot-toast';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
+  const [userImages, setUserImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [analyticsTimeframe, setAnalyticsTimeframe] = useState('week');
   const [analyticsData, setAnalyticsData] = useState([]);
-  const [analyticsTimeframe, setAnalyticsTimeframe] = useState('week'); // week, month, year
-  const [isLoadingAnalytics, setIsLoadingAnalytics] = useState(true);
+  const [statsData, setStatsData] = useState({
+    total: 0,
+    timeframeTotal: 0,
+    average: 0,
+    timeframe: 'week',
+    categoryDistribution: {}
+  });
+  const [isLoadingAnalytics, setIsLoadingAnalytics] = useState(false);
 
   useEffect(() => {
     const details = localStorage.getItem("Details");
@@ -88,13 +59,92 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    // Replace the API call with sample data temporarily
-    setIsLoadingAnalytics(true);
-    setTimeout(() => {
-      setAnalyticsData(getSampleAnalyticsData(analyticsTimeframe));
-      setIsLoadingAnalytics(false);
-    }, 800); // Simulate loading
+    const fetchAnalytics = async () => {
+      try {
+        setIsLoadingAnalytics(true);
+        const userDetails = JSON.parse(localStorage.getItem("Details"));
+        if (!userDetails?.email) return;
+
+        const response = await axios.get(
+          `http://localhost:4444/api/images/analytics/${userDetails.email}?timeframe=${analyticsTimeframe}`
+        );
+        
+        if (response.data.status) {
+          setAnalyticsData(response.data.data.analytics || []);
+          setStatsData({
+            total: response.data.data.stats.total || 0,
+            timeframeTotal: response.data.data.stats.timeframeTotal || 0,
+            average: response.data.data.stats.average || 0,
+            timeframe: response.data.data.stats.timeframe || analyticsTimeframe,
+            categoryDistribution: response.data.data.stats.categoryDistribution || {}
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching analytics:', error);
+        toast.error('Failed to load analytics');
+        // Reset to default values on error
+        setAnalyticsData([]);
+        setStatsData({
+          total: 0,
+          timeframeTotal: 0,
+          average: 0,
+          timeframe: analyticsTimeframe,
+          categoryDistribution: {}
+        });
+      } finally {
+        setIsLoadingAnalytics(false);
+      }
+    };
+
+    fetchAnalytics();
   }, [analyticsTimeframe]);
+
+  // Fetch user's images
+  useEffect(() => {
+    const fetchUserImages = async () => {
+      try {
+        const userDetails = JSON.parse(localStorage.getItem("Details"));
+        if (!userDetails?.email) return;
+
+        const response = await axios.get(
+          `http://localhost:4444/api/images/user/${userDetails.email}${
+            selectedCategory !== 'all' ? `?category=${selectedCategory}` : ''
+          }`
+        );
+
+        if (response.data.status) {
+          setUserImages(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error);
+        toast.error('Failed to load your designs');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserImages();
+  }, [selectedCategory]);
+
+  // Handle image deletion
+  const handleDeleteImage = async (imageId) => {
+    try {
+      const userDetails = JSON.parse(localStorage.getItem("Details"));
+      if (!userDetails?.email) return;
+
+      const response = await axios.delete(`http://localhost:4444/api/images/${imageId}`, {
+        data: { userId: userDetails.email }
+      });
+
+      if (response.data.status) {
+        setUserImages(prevImages => prevImages.filter(img => img._id !== imageId));
+        toast.success('Design deleted successfully');
+      }
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      toast.error('Failed to delete design');
+    }
+  };
 
   // Calculate statistics from sample data
   const getStatistics = () => {
@@ -127,21 +177,21 @@ const Dashboard = () => {
   const statsCards = [
     {
       title: 'Total Designs',
-      value: stats.total,
-      change: '+12% from last period',
+      value: statsData.total,
+      change: `${analyticsTimeframe} total`,
       icon: ImageIcon
     },
     {
-      title: 'Most Active Day',
-      value: stats.mostActiveDay,
-      change: `${stats.mostActiveCount} designs`,
-      icon: Sparkles
+      title: 'Average Per Day',
+      value: statsData.average.toFixed(1),
+      change: `in last ${analyticsTimeframe}`,
+      icon: Clock
     },
     {
-      title: 'Average Per Day',
-      value: stats.average.toFixed(1),
-      change: '+3% improvement',
-      icon: Clock
+      title: 'Most Recent',
+      value: userImages[0]?.name || 'No designs yet',
+      change: userImages[0] ? new Date(userImages[0].createdAt).toLocaleDateString() : '',
+      icon: Sparkles
     }
   ];
 
@@ -180,13 +230,15 @@ const Dashboard = () => {
   };
 
   // Custom tooltip component for the chart
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip = ({ active, payload, label, timeframe }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white/10 backdrop-blur-md border border-white/10 p-4 rounded-lg shadow-xl">
-          <p className="text-white/80 text-sm font-medium">{label}</p>
-          <p className="text-white text-lg font-semibold">
-            {payload[0].value} designs
+        <div className="bg-black/90 border border-white/10 rounded-lg p-3 shadow-xl">
+          <p className="text-white/60 text-sm mb-1">
+            {timeframe === 'day' ? 'Time' : 'Date'}: {label}
+          </p>
+          <p className="text-white font-medium">
+            {payload[0].value} design{payload[0].value !== 1 ? 's' : ''}
           </p>
         </div>
       );
@@ -226,8 +278,8 @@ const Dashboard = () => {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-sm text-white/40">Total Designs</p>
-                <h3 className="text-2xl font-semibold text-white/90 mt-1">48</h3>
-                <p className="text-xs text-white/50 mt-1.5">+12% from last month</p>
+                <h3 className="text-2xl font-semibold text-white/90 mt-1">{statsData.total}</h3>
+                <p className="text-xs text-white/50 mt-1.5">Lifetime total</p>
               </div>
               <div className="bg-white/[0.03] p-3 rounded-xl">
                 <ImageIcon className="h-5 w-5 text-white/60" />
@@ -259,7 +311,7 @@ const Dashboard = () => {
               
               {/* Timeframe Selector */}
               <div className="flex gap-2">
-                {['week', 'month', 'year'].map((timeframe) => (
+                {['day', 'week', 'month', 'year'].map((timeframe) => (
                   <Button
                     key={timeframe}
                     variant="ghost"
@@ -300,7 +352,7 @@ const Dashboard = () => {
                       stroke="rgba(255,255,255,0.1)"
                     />
                     <XAxis 
-                      dataKey="date" 
+                      dataKey={analyticsTimeframe === 'day' ? 'time' : 'date'}
                       stroke="rgba(255,255,255,0.5)"
                       tick={{ fill: 'rgba(255,255,255,0.5)' }}
                     />
@@ -308,7 +360,10 @@ const Dashboard = () => {
                       stroke="rgba(255,255,255,0.5)"
                       tick={{ fill: 'rgba(255,255,255,0.5)' }}
                     />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip 
+                      content={<CustomTooltip timeframe={analyticsTimeframe} />}
+                      cursor={{ stroke: 'rgba(255,255,255,0.2)' }}
+                    />
                     <Area
                       type="monotone"
                       dataKey="count"
@@ -345,91 +400,46 @@ const Dashboard = () => {
           </Card>
         </section>
 
-        {/* Generated Images Grid */}
+
+        {/* Images Grid */}
         <div>
           <div className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-xl font-medium text-white/90">Recent Designs</h2>
-              <p className="text-sm text-white/40 mt-1">
-                You have created {userGeneratedImages.length} designs this month
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              className="border-white/[0.08] rounded-xl hover:bg-white/[0.06] text-white/80"
-            >
-              <Settings className="h-4 w-4 mr-2" />
-              Filter
-              <ChevronDown className="h-3.5 w-3.5 ml-2 text-white/60" />
-            </Button>
+            <h2 className="text-2xl font-semibold text-white">Your Designs</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {userGeneratedImages.map((image) => (
-              <Card
-                key={image.id}
-                className="bg-white/[0.02] border-white/[0.08] rounded-2xl overflow-hidden group backdrop-blur-sm hover:bg-white/[0.04] transition-colors"
-              >
-                <div className="relative aspect-[3/2]">
-                  <img
-                    src={image.image}
-                    alt={image.name}
-                    className="object-cover w-full h-full brightness-90 group-hover:brightness-100 transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <div className="absolute bottom-0 left-0 right-0 p-5">
-                      <div className="flex flex-col gap-4">
-                        <div>
-                          <h3 className="font-medium text-white/90 text-lg">{image.name}</h3>
-                          <div className="flex items-center gap-3 mt-2">
-                            <div className="flex items-center text-white/40 text-xs">
-                              <Calendar className="h-3.5 w-3.5 mr-1.5" />
-                              {image.date}
-                            </div>
-                            <div className="flex items-center text-white/40 text-xs">
-                              <Clock className="h-3.5 w-3.5 mr-1.5" />
-                              {image.time}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${image.status === 'Published'
-                              ? 'bg-white/10 text-white/80'
-                              : 'bg-white/[0.06] text-white/40'
-                            }`}>
-                            {image.status}
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full text-white hover:bg-white/[0.06]">
-                              <Download className="h-4 w-4" />
-                            </Button>
-                            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full text-white hover:bg-white/[0.06]">
-                              <Share2 className="h-4 w-4" />
-                            </Button>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full text-white hover:bg-white/[0.06]">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent className="w-48 p-2 bg-white/[0.02] backdrop-blur-sm border-white/[0.08] rounded-xl">
-                                <DropdownMenuItem className="rounded hover:bg-white/[0.08]">Edit</DropdownMenuItem>
-                                <DropdownMenuItem className="rounded hover:bg-white/[0.08]">Duplicate</DropdownMenuItem>
-                                <DropdownMenuSeparator className="bg-white/[0.08] my-2" />
-                                <DropdownMenuItem className="rounded text-red-400 hover:bg-white/[0.08]">
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>
+              <p className="text-white/60 mt-4">Loading your designs...</p>
+            </div>
+          ) : userImages.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {userImages.map((image) => (
+                <Card
+                  key={image._id}
+                  className="bg-white/[0.02] border-white/[0.08] rounded-xl overflow-hidden group"
+                >
+                  <div className="relative aspect-[3/2]">
+                    <img
+                      src={image.imageUrl}
+                      alt={image.name}
+                      className="object-contain w-full h-full"
+                    />
                   </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+                  <div className="p-4">
+                    <h3 className="text-white font-medium">{image.name}</h3>
+                    <p className="text-white/60 text-sm mt-1">
+                      {new Date(image.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-white/60">No designs found. Start creating!</p>
+            </div>
+          )}
         </div>
       </main>
     </div>

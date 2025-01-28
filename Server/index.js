@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use("/api/auth", userRoutes);
 app.use('/api/images', imageRoutes);
 
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
