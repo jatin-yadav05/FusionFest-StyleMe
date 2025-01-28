@@ -26,11 +26,59 @@ import {
   DropdownMenuTrigger,
 } from '../components/ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer
+} from 'recharts';
+import axios from 'axios';
+
+const getSampleAnalyticsData = (timeframe) => {
+  const now = new Date();
+  const data = [];
+  let days;
+
+  switch (timeframe) {
+    case 'year':
+      days = 365;
+      break;
+    case 'month':
+      days = 30;
+      break;
+    default: // week
+      days = 7;
+      break;
+  }
+
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    
+    // Generate random count with some patterns
+    let count;
+    if (date.getDay() === 0 || date.getDay() === 6) {
+      // Weekends have higher activity
+      count = Math.floor(Math.random() * 8) + 5;
+    } else {
+      // Weekdays have moderate activity
+      count = Math.floor(Math.random() * 5) + 2;
+    }
+
+    data.push({
+      date: date.toISOString().split('T')[0],
+      count: count
+    });
+  }
+
+  return data;
+};
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
+  const [analyticsData, setAnalyticsData] = useState([]);
+  const [analyticsTimeframe, setAnalyticsTimeframe] = useState('week'); // week, month, year
+  const [isLoadingAnalytics, setIsLoadingAnalytics] = useState(true);
 
   useEffect(() => {
     const details = localStorage.getItem("Details");
@@ -38,6 +86,64 @@ const Dashboard = () => {
       setUserDetails(JSON.parse(details));
     }
   }, []);
+
+  useEffect(() => {
+    // Replace the API call with sample data temporarily
+    setIsLoadingAnalytics(true);
+    setTimeout(() => {
+      setAnalyticsData(getSampleAnalyticsData(analyticsTimeframe));
+      setIsLoadingAnalytics(false);
+    }, 800); // Simulate loading
+  }, [analyticsTimeframe]);
+
+  // Calculate statistics from sample data
+  const getStatistics = () => {
+    if (!analyticsData.length) return { total: 0, average: 0, mostActiveDay: '', mostActiveCount: 0 };
+
+    const total = analyticsData.reduce((acc, curr) => acc + curr.count, 0);
+    const average = total / analyticsData.length;
+    
+    const dayCounts = analyticsData.reduce((acc, curr) => {
+      const day = new Date(curr.date).toLocaleDateString('en-US', { weekday: 'long' });
+      acc[day] = (acc[day] || 0) + curr.count;
+      return acc;
+    }, {});
+
+    const mostActiveDay = Object.entries(dayCounts)
+      .sort(([,a], [,b]) => b - a)[0];
+
+    return {
+      total,
+      average,
+      mostActiveDay: mostActiveDay[0],
+      mostActiveCount: mostActiveDay[1]
+    };
+  };
+
+  // Use the statistics in your stats cards
+  const stats = getStatistics();
+
+  // Update the stats cards section
+  const statsCards = [
+    {
+      title: 'Total Designs',
+      value: stats.total,
+      change: '+12% from last period',
+      icon: ImageIcon
+    },
+    {
+      title: 'Most Active Day',
+      value: stats.mostActiveDay,
+      change: `${stats.mostActiveCount} designs`,
+      icon: Sparkles
+    },
+    {
+      title: 'Average Per Day',
+      value: stats.average.toFixed(1),
+      change: '+3% improvement',
+      icon: Clock
+    }
+  ];
 
   const userGeneratedImages = [
     {
@@ -71,6 +177,21 @@ const Dashboard = () => {
     localStorage.removeItem("Details");
     navigate("/");
     setIsLoggingOut(false);
+  };
+
+  // Custom tooltip component for the chart
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white/10 backdrop-blur-md border border-white/10 p-4 rounded-lg shadow-xl">
+          <p className="text-white/80 text-sm font-medium">{label}</p>
+          <p className="text-white text-lg font-semibold">
+            {payload[0].value} designs
+          </p>
+        </div>
+      );
+    }
+    return null;
   };
 
   if (!userDetails) return null;
@@ -124,6 +245,105 @@ const Dashboard = () => {
             </Button>
           </Card>
         </div>
+
+        {/* Analytics Section */}
+        <section className="mb-12">
+          <Card className="bg-white/[0.02] border-white/[0.08] rounded-2xl p-6 backdrop-blur-sm">
+            <div className="flex justify-between items-center mb-8">
+              <div>
+                <h2 className="text-xl font-medium text-white/90">Design Analytics</h2>
+                <p className="text-sm text-white/40 mt-1">
+                  Track your design generation activity
+                </p>
+              </div>
+              
+              {/* Timeframe Selector */}
+              <div className="flex gap-2">
+                {['week', 'month', 'year'].map((timeframe) => (
+                  <Button
+                    key={timeframe}
+                    variant="ghost"
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      analyticsTimeframe === timeframe
+                        ? 'bg-white/10 text-white'
+                        : 'text-white/40 hover:text-white/60'
+                    }`}
+                    onClick={() => setAnalyticsTimeframe(timeframe)}
+                  >
+                    {timeframe.charAt(0).toUpperCase() + timeframe.slice(1)}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Chart */}
+            <div className="h-[400px] w-full">
+              {isLoadingAnalytics ? (
+                <div className="h-full flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/10 border-t-white"></div>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={analyticsData}
+                    margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
+                  >
+                    <defs>
+                      <linearGradient id="designCount" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#fff" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#fff" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid 
+                      strokeDasharray="3 3" 
+                      vertical={false}
+                      stroke="rgba(255,255,255,0.1)"
+                    />
+                    <XAxis 
+                      dataKey="date" 
+                      stroke="rgba(255,255,255,0.5)"
+                      tick={{ fill: 'rgba(255,255,255,0.5)' }}
+                    />
+                    <YAxis 
+                      stroke="rgba(255,255,255,0.5)"
+                      tick={{ fill: 'rgba(255,255,255,0.5)' }}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Area
+                      type="monotone"
+                      dataKey="count"
+                      stroke="#fff"
+                      fillOpacity={1}
+                      fill="url(#designCount)"
+                      strokeWidth={2}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-3 gap-6 mt-8">
+              {statsCards.map((stat, index) => (
+                <Card
+                  key={index}
+                  className="bg-white/[0.02] border-white/[0.08] rounded-xl p-4 backdrop-blur-sm hover:bg-white/[0.04] transition-all duration-300"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="bg-white/[0.05] p-3 rounded-lg">
+                      <stat.icon className="h-5 w-5 text-white/60" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-white/40">{stat.title}</p>
+                      <h4 className="text-xl font-semibold text-white mt-1">{stat.value}</h4>
+                      <p className="text-xs text-emerald-400 mt-1">{stat.change}</p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </Card>
+        </section>
 
         {/* Generated Images Grid */}
         <div>

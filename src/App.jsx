@@ -10,6 +10,9 @@ import Dashboard from "./components/Dashboard"
 import {GoogleOAuthProvider} from '@react-oauth/google'
 import PreventPages from './components/PreventPages'
 import Not_found from './components/Not_found'
+import AboutUs from './pages/AboutUs'
+import Faq from './pages/Faq'
+
 function App() {
   useEffect(() => {
     document.documentElement.classList.add('dark')
@@ -31,6 +34,8 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/faq" element={<Faq />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/generate" element={<Generate />} />
         <Route path="/login" element={<GoogleAuthWrapper />} />

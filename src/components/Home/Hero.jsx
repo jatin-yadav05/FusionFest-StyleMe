@@ -29,7 +29,7 @@ const Hero = () => {
       <div className='absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black opacity-50'></div>
       
       {/* Left Section */}
-      <div className='w-full lg:w-[55%] text-white flex justify-center flex-col pt-8 lg:pt-0 gap-8 lg:gap-12 px-6 lg:px-0 relative hero-section'>
+      <div className='w-full lg:w-[55%] text-white flex justify-center flex-col pt-8 lg:pt-0 gap-8 lg:gap-12 px-6 lg:px-0 relative'>
         <div className='flex flex-col gap-12 lg:gap-16'>
           {/* Animated Text */}
           <div className='text-3xl md:text-5xl lg:text-6xl font-bold w-full lg:w-[120%] relative lg:left-[15%] z-20 tracking-tight leading-tight'>

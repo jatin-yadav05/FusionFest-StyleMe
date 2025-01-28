@@ -112,4 +112,64 @@ router.delete('/:imageId', async (req, res) => {
     }
 });
 
+// Add this new route
+router.get('/analytics/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { timeframe = 'week' } = req.query;
+
+        const now = new Date();
+        let startDate;
+
+        switch (timeframe) {
+            case 'year':
+                startDate = new Date(now.getFullYear(), 0, 1);
+                break;
+            case 'month':
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                break;
+            default: // week
+                startDate = new Date(now.setDate(now.getDate() - 7));
+                break;
+        }
+
+        const images = await Images.find({
+            userId,
+            createdAt: { $gte: startDate }
+        }).sort({ createdAt: 1 });
+
+        // Group images by date
+        const groupedData = images.reduce((acc, img) => {
+            const date = img.createdAt.toISOString().split('T')[0];
+            acc[date] = (acc[date] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Fill in missing dates
+        const analytics = [];
+        const currentDate = new Date(startDate);
+
+        while (currentDate <= now) {
+            const date = currentDate.toISOString().split('T')[0];
+            analytics.push({
+                date,
+                count: groupedData[date] || 0
+            });
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        res.json({
+            status: true,
+            data: analytics
+        });
+
+    } catch (error) {
+        console.error('Error fetching analytics:', error);
+        res.status(500).json({
+            status: false,
+            msg: "Error fetching analytics"
+        });
+    }
+});
+
 module.exports = router; 

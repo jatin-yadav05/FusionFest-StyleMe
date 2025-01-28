@@ -58,10 +58,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-semibold text-white">Company</h3>
             <ul className="space-y-2.5">
-              {['About Us', 'Blog', 'Careers', 'Press'].map((item) => (
+              {['About'].map((item) => (
                 <li key={item}>
                   <Link 
-                    to={`/${item.toLowerCase().replace(' ', '-')}`}
+                    to={`/${item.toLowerCase().replace(' ', '')}`}
                     className="text-base text-zinc-400 hover:text-white transition-colors inline-block hover:translate-x-0.5 transform duration-200"
                   >
                     {item}

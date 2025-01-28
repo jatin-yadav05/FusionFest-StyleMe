@@ -40,7 +40,7 @@
     "react-scripts": "^5.0.1",
     "react-scroll-parallax": "^3.4.5",
     "react-toastify": "^11.0.3",
-    "recharts": "^2.15.0",
+    "recharts": "^2.15.1",
     "sonner": "^1.7.2",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",

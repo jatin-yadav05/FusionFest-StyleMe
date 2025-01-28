@@ -150,18 +150,18 @@ function Generate() {
     bottoms: [
       {
         id: 4,
-        name: 'Blue Jeans',
-        image: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&h=500&fit=crop'
+        name: 'Brown Bottom',
+        image: '/src/assets/home/Brown-bottom.jpg'
       },
       {
         id: 5,
-        name: 'Black Skirt',
-        image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500&h=500&fit=crop'
+        name: 'Black Bottom',
+        image: '/src/assets/home/Black-bottom.jpg'
       },
       {
         id: 6,
-        name: 'Khaki Pants',
-        image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&h=500&fit=crop'
+        name: 'Pink Bottom',
+        image: '/src/assets/home/Pink-bottom.jpg'
       },
     ],
     dresses: [
@@ -455,7 +455,7 @@ function Generate() {
           blob
         });
 
-        // Save the try-on result
+        // Save the final try-on result
         await saveGeneratedImage(result.data[0].url);
         setRetryCount(0);
       }
@@ -669,8 +669,6 @@ function Generate() {
           'Content-Type': 'application/json'
         }
       });
-
-      console.log('Save image response:', response.data);
 
       if (response.data.status) {
         toast.success("Design saved successfully!");
